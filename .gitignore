@@ -1,3 +1,10 @@
 out/
 .idea/
 *.iml
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
