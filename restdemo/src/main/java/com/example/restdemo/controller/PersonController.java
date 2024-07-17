@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 @RestController
@@ -61,5 +62,26 @@ public class PersonController {
             person.getMessages().removeIf(m -> m.getId() == m_id);
             repository.save(person);
         }
+    }
+
+    @GetMapping("person/{p_id}/message")
+    public ResponseEntity<Iterable<Message>> getMessages(@PathVariable int p_id) {
+        Optional<Person> personOptional = repository.findById(p_id);
+        if(personOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Person person = personOptional.get();
+        return new ResponseEntity<>(person.getMessages(), HttpStatus.OK);
+    }
+
+    @GetMapping("person/{p_id}/message/{m_id}")
+    public ResponseEntity<Optional<Message>> getMessage(@PathVariable int p_id, @PathVariable int m_id) {
+        Optional<Person> personOptional = repository.findById(p_id);
+        if(personOptional.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Person person = personOptional.get();
+        Optional<Message> message = person.getMessages().stream().filter(m -> m.getId() == m_id).findFirst();
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
