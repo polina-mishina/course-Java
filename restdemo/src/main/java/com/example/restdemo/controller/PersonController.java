@@ -48,8 +48,18 @@ public class PersonController {
         repository.deleteById(id);
     }
 
-    @PostMapping("/person/{id}/message")
-    public ResponseEntity<Person> addMessage(@PathVariable int id, @RequestBody Message message) {
-        return service.addMessageToPerson(id, message);
+    @PostMapping("/person/{p_id}/message")
+    public ResponseEntity<Person> addMessage(@PathVariable int p_id, @RequestBody Message message) {
+        return service.addMessageToPerson(p_id, message);
+    }
+
+    @DeleteMapping("/person/{p_id}/message/{m_id}")
+    public void deleteMessage(@PathVariable int p_id, @PathVariable int m_id) {
+        Optional<Person> personOptional = repository.findById(p_id);
+        if(personOptional.isPresent()) {
+            Person person = personOptional.get();
+            person.getMessages().removeIf(m -> m.getId() == m_id);
+            repository.save(person);
+        }
     }
 }
