@@ -1,11 +1,11 @@
 package ru.evolenta.location.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.evolenta.location.model.Location;
 import ru.evolenta.location.repository.LocationRepository;
+import ru.evolenta.location.service.LocationService;
 
 import java.util.Optional;
 
@@ -15,6 +15,9 @@ public class LocationController {
 
     @Autowired
     private LocationRepository repository;
+
+    @Autowired
+    private LocationService service;
 
     @GetMapping("/all")
     public Iterable<Location> findAll() {
@@ -33,11 +36,6 @@ public class LocationController {
 
     @PostMapping
     public ResponseEntity<Location> save(@RequestBody Location location) {
-        if (repository.findById(location.getId()).isPresent()) {
-            return new ResponseEntity<>(repository.findById(location.getId()).get(), HttpStatus.BAD_REQUEST);
-        }
-        return repository.findLocationByNameLikeIgnoreCase(location.getName()).isPresent()
-                ? new ResponseEntity<>(repository.findLocationByNameLikeIgnoreCase(location.getName()).get(), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(repository.save(location), HttpStatus.CREATED);
+        return service.save(location);
     }
 }
