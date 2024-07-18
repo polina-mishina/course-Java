@@ -1,28 +1,25 @@
 package ru.evolenta.weather.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import ru.evolenta.weather.model.Weather;
-import ru.evolenta.weather.repository.WeatherRepository;
-
-import java.util.Optional;
+import org.springframework.web.client.RestTemplate;
+import ru.evolenta.weather.model.Main;
+import ru.evolenta.weather.model.Root;
 
 @RestController
-@RequestMapping("/weather")
 public class WeatherController {
 
     @Autowired
-    private WeatherRepository repository;
+    private RestTemplate restTemplate;
+    @Value("${appid}")
+    String appId;
+    @Value("${url.weather}")
+    private String urlWeather;
 
-    @GetMapping
-    public Optional<Weather> findByLatAndLon(@RequestParam("lat") Double lat, @RequestParam("lon") Double lon) {
-        return repository.findWeatherByLatitudeAndLongitude(lat, lon);
-    }
-
-    @PostMapping
-    public ResponseEntity<Weather> save(@RequestBody Weather weather) {
-        Weather saved = repository.save(weather);
-        return ResponseEntity.ok(saved);
+    @GetMapping("/weather")
+    public Main getWeather(@RequestParam String lat, @RequestParam String lon) {
+        String request = String.format("%s?lat=%s&lon=%s&units=metric&appid=%s", urlWeather, lat, lon, appId);
+        return restTemplate.getForObject(request, Root.class).getMain();
     }
 }
