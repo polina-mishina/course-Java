@@ -20,4 +20,10 @@ public class Location {
     private Double lon;
     @NonNull private Double lat;
     @NonNull private String name;
+
+    public Location(@NonNull Double lon, @NonNull Double lat, @NonNull String name) {
+        this.lon = lon;
+        this.lat = lat;
+        this.name = name;
+    }
 }
