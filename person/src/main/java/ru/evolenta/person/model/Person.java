@@ -21,13 +21,13 @@ public class Person {
     @NonNull private String surname;
     private String lastname;
     @NonNull private LocalDate birthday;
-    @NonNull private String locationName;
+    @NonNull private String location;
 
-    public Person(@NonNull String firstname, @NonNull String surname, String lastname, @NonNull LocalDate birthday, @NonNull String locationName) {
+    public Person(@NonNull String firstname, @NonNull String surname, String lastname, @NonNull LocalDate birthday, @NonNull String location) {
         this.firstname = firstname;
         this.surname = surname;
         this.lastname = lastname;
         this.birthday = birthday;
-        this.locationName = locationName;
+        this.location = location;
     }
 }
