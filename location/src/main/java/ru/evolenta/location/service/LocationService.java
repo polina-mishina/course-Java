@@ -30,7 +30,7 @@ public class LocationService {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Location location = locationOptional.get();
-        String url = String.format("%s?lat=%s&lon=%s", weatherUrl, location.getLat(), location.getLon());
+        String url = String.format("%s?lat=%s&lon=%s", weatherUrl, location.getLatitude(), location.getLongitude());
         return new ResponseEntity<>(restTemplate.getForObject(url, Weather.class), HttpStatus.OK);
     }
 

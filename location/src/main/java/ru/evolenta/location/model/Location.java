@@ -17,13 +17,13 @@ public class Location {
     @Id @GeneratedValue
     int id;
     @NonNull
-    private Double lon;
-    @NonNull private Double lat;
+    private Double longitude;
+    @NonNull private Double latitude;
     @NonNull private String name;
 
-    public Location(@NonNull Double lon, @NonNull Double lat, @NonNull String name) {
-        this.lon = lon;
-        this.lat = lat;
+    public Location(@NonNull Double longitude, @NonNull Double latitude, @NonNull String name) {
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.name = name;
     }
 }
